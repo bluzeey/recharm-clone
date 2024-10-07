@@ -1,11 +1,11 @@
 import Link from 'next/link'
 
 const quickLinks = [
-  { href: "/example_video_ads", text: "For Creative Strategists" },
-  { href: "/for_media_buyers", text: "For Media Buyers" },
-  { href: "/blog", text: "Blog" },
+  { href: "https://recharm.com/example_video_ads", text: "For Creative Strategists" },
+  { href: "https://recharm.com/for_media_buyers", text: "For Media Buyers" },
+  { href: "https://recharm.com/blog", text: "Blog" },
   { href: "https://app.recharm.com/auth/", text: "Login" },
-  { href: "/privacy_policy", text: "Privacy Policy" },
+  { href: "https://recharm.com/privacy_policy", text: "Privacy Policy" },
 ]
 
 export default function Footer() {
