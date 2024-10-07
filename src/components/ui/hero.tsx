@@ -1,7 +1,30 @@
-import Link from 'next/link'
-import { Button } from "@/components/ui/button"
+"use client";
+import React, { useState, useRef } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export default function Hero() {
+  // State to track if the video is playing
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  // Create references for both videos
+  const videoRefMobile = useRef(null);
+  const videoRefDesktop = useRef(null);
+
+  // Function to toggle play/pause
+  const handleTogglePlayPause = () => {
+    const desktopVideo = videoRefDesktop.current;
+
+    if (isPlaying) {
+
+      desktopVideo?.pause();
+      setIsPlaying(false);
+    } else {
+      desktopVideo?.play();
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-y-10 lg:flex-row lg:gap-x-10 max-w-7xl my-24">
       <div className="w-full lg:w-[55%]">
@@ -35,28 +58,46 @@ export default function Hero() {
       </div>
       <div className="relative w-full overflow-hidden lg:w-[45%] m-auto">
         {/* Updated the video component to include proper poster URLs and control attributes */}
-        <video 
-          className="block w-full rounded-md lg:hidden" 
-          poster="https://recharm-experiments.s3.amazonaws.com/landingpage_videos/recharm_demo_9x16_poster_2.png" 
-          controls
+        <video
+          ref={videoRefMobile}
+          className="block w-full rounded-md lg:hidden"
+          poster="https://recharm-experiments.s3.amazonaws.com/landingpage_videos/recharm_demo_9x16_poster_2.png"
+          onClick={handleTogglePlayPause}
         >
-          <source src="https://recharm-experiments.s3.amazonaws.com/landingpage_videos/recharm_demo_v4_9x16_small.mp4" type="video/mp4" />
+          <source
+            src="https://recharm-experiments.s3.amazonaws.com/landingpage_videos/recharm_demo_v4_9x16_small.mp4"
+            type="video/mp4"
+          />
           Your browser does not support the video tag.
         </video>
-        <video 
-          className="hidden w-full rounded-md lg:block" 
-          poster="https://recharm-experiments.s3.amazonaws.com/landingpage_videos/recharm_Demo_16x9_poster_2.png" 
+        <video
+          ref={videoRefDesktop}
+          className="hidden w-full rounded-md lg:block"
+          poster="https://recharm-experiments.s3.amazonaws.com/landingpage_videos/recharm_Demo_16x9_poster_2.png"
           controls
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
         >
-          <source src="https://recharm-experiments.s3.amazonaws.com/landingpage_videos/recharm_demo_v4_16x9_small.mp4" type="video/mp4" />
+          <source
+            src="https://recharm-experiments.s3.amazonaws.com/landingpage_videos/recharm_demo_v4_16x9_small.mp4"
+            type="video/mp4"
+          />
           Your browser does not support the video tag.
         </video>
-        <div className="absolute -top-10 left-0 flex h-full w-full cursor-pointer items-center justify-center">
-          <div className="mt-20 flex h-20 w-20 items-center justify-center rounded-full bg-black bg-opacity-60">
-            <button className="p-10 text-4xl text-white">►</button>
+        {/* Hide play button when video is playing */}
+        {!isPlaying && (
+          <div className="absolute -top-10 left-0 flex h-full w-full cursor-pointer items-center justify-center">
+            <div className="mt-20 flex h-20 w-20 items-center justify-center rounded-full bg-black bg-opacity-60">
+              <button
+                className="p-10 text-4xl text-white"
+                onClick={handleTogglePlayPause}
+              >
+                ►
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
-  )
+  );
 }
